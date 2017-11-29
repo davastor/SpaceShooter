@@ -9,6 +9,7 @@ Enemy::Enemy(QObject *parent) : QObject(parent)
     setTransformOriginPoint(62, 119);
     timer = new QTimer(this);
     destinationSet = false;
+    health = 100;
     connect(timer, SIGNAL(timeout()), this, SLOT(updateState()));
 
     timer->start(10);
@@ -45,6 +46,16 @@ void Enemy::updateState()
         if(pos().y() != (p1.y()))
             setPos(x(), y()-((line->dy()+145)/line->length()));
     }
+}
+
+void Enemy::subtractHealth(int x)
+{
+    health -= x;
+}
+
+int Enemy::getHealth()
+{
+    return health;
 }
 
 Enemy::~Enemy()

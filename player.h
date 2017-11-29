@@ -27,6 +27,9 @@ public:
     ~Player();
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
+    void subtractHealth(int x);
+    void subtractShield(int x);
+    int getHealth();
     QPointF getOrigin();
 
 signals:
