@@ -16,6 +16,9 @@ Player::Player(QObject *parent) : QObject(parent)
     isMovingDown = false;
     isMovingLeft = false;
     isMovingRight = false;
+    
+    health = 100;
+    shield = 100;
 }
 
 QPointF Player::getOrigin(){
@@ -73,7 +76,25 @@ void Player::updateState()
     if(isMovingRight)
         setX(pos().x() + 3);
 
-    // setRotation(angle);
+    //setRotation(angle);
+}
+
+void Player::subtractHealth(int x)
+{
+    health -= x;
+}
+
+void Player::subtractShield(int x)
+{
+    if(shield != 0)
+        shield -= x;
+    else
+        health -= x;
+}
+
+int Player::getHealth()
+{
+    return health;
 }
 
 Player::~Player()

@@ -23,9 +23,13 @@ private:
     bool isShootingRocket;
     QTimer* spawnTimer;
     QTimer* enemyDestinationTimer;
+    QTimer* enemyAngleTimer;
     QList <Enemy*> enemyCollection;
     int enemyCount;
     Enemy* enemy;
+    int xRand;
+    int yRand;
+    int spawnArea;
 
 public:
     explicit Game(QWidget *parent = 0);
@@ -41,6 +45,7 @@ signals:
 public slots:
     void spawn();
     void setEnemyDestination();
+    void setEnemyAngle();
 
 
 };

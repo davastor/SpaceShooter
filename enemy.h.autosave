@@ -19,12 +19,15 @@ private:
     QPointF p2;
     QLineF* line2;
     bool destinationSet;
+    int health;
 
 
 public:
     explicit Enemy(QObject *parent = 0);
     void setDestination(Player* player, int xRand, int yRand);
     void setAngle(Player* player);
+    void subtractHealth(int x);
+    int getHealth();
     ~Enemy();
 
 signals:
