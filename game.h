@@ -10,6 +10,8 @@
 #include <QTimer>
 #include "Enemy.h"
 #include <QList>
+#include "playerlaser.h"
+#include "playerprojectile.h"
 
 class Game : public QGraphicsView
 {
@@ -17,13 +19,22 @@ class Game : public QGraphicsView
 
 private:
     QGraphicsScene* scene;
+    double angle;
     //QGraphicsView* view;
+    QPointF p1;
+    QPointF p2;
+    QLineF line;
+    int xSpawn;
+    int ySpawn;
     Player* player;
     bool isShootingLaser;
     bool isShootingRocket;
     QTimer* spawnTimer;
     QTimer* enemyDestinationTimer;
     QTimer* enemyAngleTimer;
+    QTimer* updateLaserTimer;
+    QTimer* playerFireTimer;
+    QTimer* updateRocketTimer;
     QList <Enemy*> enemyCollection;
     int enemyCount;
     Enemy* enemy;
@@ -46,7 +57,7 @@ public slots:
     void spawn();
     void setEnemyDestination();
     void setEnemyAngle();
-
+    void playerFire();
 
 };
 

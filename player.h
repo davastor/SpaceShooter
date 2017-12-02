@@ -14,12 +14,13 @@ class Player : public QObject, public QGraphicsPixmapItem
 private:
     int health;
     int shield;
-    double angle;
+    //double angle;
     QTimer* timer;
     bool isMovingLeft;
     bool isMovingRight;
     bool isMovingUp;
     bool isMovingDown;
+    int playerAngle;
 
 
 public:
@@ -29,6 +30,8 @@ public:
     void keyReleaseEvent(QKeyEvent *event);
     void subtractHealth(int x);
     void subtractShield(int x);
+    void setPlayerAngle(int _angle);
+    int getPlayerAngle();
     int getHealth();
     QPointF getOrigin();
 

@@ -16,13 +16,23 @@ Player::Player(QObject *parent) : QObject(parent)
     isMovingDown = false;
     isMovingLeft = false;
     isMovingRight = false;
-
+    
     health = 100;
     shield = 100;
 }
 
 QPointF Player::getOrigin(){
     return mapToScene(transformOriginPoint());
+}
+
+void Player::setPlayerAngle(int _angle)
+{
+    playerAngle = _angle;
+}
+
+int Player::getPlayerAngle()
+{
+    return playerAngle;
 }
 
 void Player::keyPressEvent(QKeyEvent *event)

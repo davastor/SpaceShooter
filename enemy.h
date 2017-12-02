@@ -6,6 +6,8 @@
 #include <QTimer>
 #include "Player.h"
 #include <QVector2D>
+#include "playerprojectile.h"
+
 
 
 class Enemy : public QObject, public QGraphicsPixmapItem
@@ -15,19 +17,22 @@ class Enemy : public QObject, public QGraphicsPixmapItem
 private:
     QTimer* timer;
     QLineF* line;
+    QPointF p0;
     QPointF p1;
     QPointF p2;
     QLineF* line2;
     bool destinationSet;
     int health;
+    QList <QGraphicsItem*> collItems;
+    //PlayerProjectile* projectileType;
 
 
 public:
     explicit Enemy(QObject *parent = 0);
     void setDestination(Player* player, int xRand, int yRand);
     void setAngle(Player* player);
-    void subtractHealth(int x);
-    int getHealth();
+   // void subtractHealth(int x);
+   //int getHealth();
     ~Enemy();
 
 signals:

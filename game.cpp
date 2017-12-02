@@ -1,13 +1,14 @@
 #include "game.h"
 #include <QCursor>
 #include <CTime>
+#include <QDebug>
 
 Game::Game(QWidget*parent) : QGraphicsView(parent)
 {
 
     scene = new QGraphicsScene(this);
     //view = new QGraphicsView(scene);
-    player = new Player();
+    player = new Player(this);
     enemy = new Enemy(this);
 
     setScene(scene);
@@ -43,6 +44,12 @@ Game::Game(QWidget*parent) : QGraphicsView(parent)
     connect(enemyAngleTimer, SIGNAL(timeout()), this, SLOT(setEnemyAngle()));
     enemyAngleTimer->start(10);
 
+    //updateLaserTimer = new QTimer(this);
+    //updateRocketTimer = new QTimer(this);
+    playerFireTimer = new QTimer(this);
+
+    connect(playerFireTimer, SIGNAL(timeout()), this, SLOT(playerFire()));
+    playerFireTimer->start(1000);
 
     show();
 }
@@ -50,11 +57,12 @@ Game::Game(QWidget*parent) : QGraphicsView(parent)
 void Game::mouseMoveEvent(QMouseEvent *event)
 {
 
-    QPointF p1 = player->getOrigin();
-    QPointF p2 = event->pos();
-    QLineF line(p1, p2);
-    double angle = -1*line.angle()+90;
+    p1 = player->getOrigin();
+    p2 = event->pos();
+    line = QLineF(p1, p2);
+    angle = -1*line.angle()+90;
     player->setRotation(angle);
+    player->setPlayerAngle(player->rotation());
 }
 
 void Game::mousePressEvent(QMouseEvent *event)
@@ -62,17 +70,27 @@ void Game::mousePressEvent(QMouseEvent *event)
     if(event->button() == Qt::LeftButton)
     {
         isShootingLaser = true;
+
     }
     if(event->button() == Qt::RightButton)
     {
         isShootingRocket = true;
-        return;
+
     }
 }
 
 void Game::mouseReleaseEvent(QMouseEvent *event)
 {
-    return;
+    if(event->button() == Qt::LeftButton)
+    {
+        isShootingLaser = false;
+        //qDebug() << "debug lef click release";
+
+    }
+    if(event->button() == Qt::RightButton)
+    {
+        isShootingRocket = false;
+    }
 }
 
 void Game::mouseDoubleClickEvent(QMouseEvent *event)
@@ -80,11 +98,24 @@ void Game::mouseDoubleClickEvent(QMouseEvent *event)
     return;
 }
 
+void Game::playerFire()
+{
+    if(isShootingLaser == true)
+    {
+        PlayerLaser* laser = new PlayerLaser();
+        scene->addItem(laser);
+        laser->setPos(player->getOrigin().x(), player->getOrigin().y());
+        laser->setRotation(player->getPlayerAngle()-90);
+        qDebug()<< "debug";
+    }
+}
+
+
 void Game::spawn()
 {
     spawnArea = rand()%3;
-    int xSpawn = 0;
-    int ySpawn = 0;
+    xSpawn = 0;
+    ySpawn = 0;
 
     if(spawnArea == 0)  //spawn from top
     {
@@ -107,17 +138,14 @@ void Game::spawn()
         ySpawn = rand()%200;
     }
 
-
-    if(enemyCount != 10)
+    if(enemyCount != 3)
     {
-
         enemy = new Enemy(this);
         enemyCollection.push_back(enemy);
         scene->addItem(enemy);
         enemy->setPos(xSpawn, ySpawn);
         enemyCount++;
     }
-
 }
 
 void Game::setEnemyDestination()

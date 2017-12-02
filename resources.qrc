@@ -3,5 +3,7 @@
         <file>player.png</file>
         <file>cursor.png</file>
         <file>alien.png</file>
+        <file>EnemyLaser.png</file>
+        <file>PlayerLaser.png</file>
     </qresource>
 </RCC>

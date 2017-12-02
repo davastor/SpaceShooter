@@ -1,6 +1,6 @@
 #include "enemy.h"
 #include <QLineF>
-
+#include <QGraphicsScene>
 
 Enemy::Enemy(QObject *parent) : QObject(parent)
 {
@@ -12,17 +12,17 @@ Enemy::Enemy(QObject *parent) : QObject(parent)
     health = 100;
     connect(timer, SIGNAL(timeout()), this, SLOT(updateState()));
 
-    timer->start(10);
+    timer->start(1000/60);
 
 }
 
 void Enemy::setDestination(Player* player, int xRand, int yRand)
 {
     destinationSet = true;
-    QPointF p(player->getOrigin().x()+xRand, player->getOrigin().y()+yRand);
+    p0 = QPointF(player->getOrigin().x()+xRand, player->getOrigin().y()+yRand);
     p1 = QPointF(player->getOrigin());
     p2 = QPointF(pos());
-    line = new QLineF(p, p2);
+    line = new QLineF(p0, p2);
 
 
 }
@@ -37,26 +37,46 @@ void Enemy::setAngle(Player* player)
 
 void Enemy::updateState()
 {
-
     if(destinationSet)
     {
-        ;
         if(pos().x() != (p1.x()))
             setPos(x()-((line->dx()+75)/line->length()), y());
         if(pos().y() != (p1.y()))
             setPos(x(), y()-((line->dy()+145)/line->length()));
     }
+
+    collItems = collidingItems();
+    int n = collItems.size();
+
+    for(int i = 0; i < n; i++)
+    {
+        if(typeid(*(collItems[i])) == typeid(PlayerProjectile))
+        {
+            //health -=
+
+        }
+    }
+
+
+    if(health <= 0)
+    {
+        scene()->removeItem(this);
+        delete(this);
+    }
+
 }
 
-void Enemy::subtractHealth(int x)
+/*void Enemy::subtractHealth(int x)
 {
     health -= x;
 }
 
-int Enemy::getHealth()
+/*int Enemy::getHealth()
 {
     return health;
 }
+*/
+
 
 Enemy::~Enemy()
 {

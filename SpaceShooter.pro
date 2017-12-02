@@ -17,13 +17,15 @@ SOURCES += main.cpp \
     game.cpp \
     player.cpp \
     enemy.cpp \
-    projectile.cpp
+    playerlaser.cpp \
+    playerprojectile.cpp
 
 HEADERS  += \
     game.h \
     player.h \
     enemy.h \
-    projectile.h
+    playerprojectile.h \
+    playerlaser.h
 
 RESOURCES += \
     resources.qrc
