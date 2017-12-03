@@ -34,7 +34,7 @@ Game::Game(QWidget*parent) : QGraphicsView(parent)
     xRand = rand()%1000-500;
     yRand = rand()%1000-500;
 
-    missileTimer = 3;
+    missileTimer = 5;
 
     spawnTimer = new QTimer(this);
     connect(spawnTimer, SIGNAL(timeout()), this, SLOT(spawn()));
@@ -42,7 +42,7 @@ Game::Game(QWidget*parent) : QGraphicsView(parent)
 
     enemyDestinationTimer = new QTimer(this);
     connect(enemyDestinationTimer, SIGNAL(timeout()), this, SLOT(setEnemyDestination()));
-    enemyDestinationTimer->start(2000);
+    enemyDestinationTimer->start(500);
 
     enemyAngleTimer = new QTimer(this);
     connect(enemyAngleTimer, SIGNAL(timeout()), this, SLOT(setEnemyAngle()));
@@ -161,7 +161,7 @@ void Game::playerFire()
         //qDebug()<< "debug";
     }
 
-    if(isShootingMissile == true && missileTimer >= 3)
+    if(isShootingMissile == true && missileTimer >= 5)
     {
         PlayerMissile* missile = new PlayerMissile();
         scene->addItem(missile);
@@ -211,8 +211,9 @@ void Game::enemyFire()
 
 void Game::spawn()
 {
-    srand(time(NULL));
-    spawnArea = rand()%4;
+    //srand(time;
+
+    spawnArea += 1;
     xSpawn = 0;
     ySpawn = 0;
 
@@ -236,6 +237,7 @@ void Game::spawn()
     {
         xSpawn = rand()%300+2100;
         ySpawn = rand()%300;
+        spawnArea = 0;
     }
 
     if(enemyCount < 3)

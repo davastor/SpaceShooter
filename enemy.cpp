@@ -5,6 +5,7 @@
 #include "playermissile.h"
 #include "player.h"
 #include "enemylaser.h"
+#include <CTime>
 
 Enemy::Enemy(QObject *parent) : QObject(parent)
 {
@@ -56,11 +57,11 @@ void Enemy::updateState()
 
     for(int i = 0; i < collItems.size(); i++)
     {
-       /* if(typeid(*(collItems[i])) == typeid(EnemyLaser) || typeid(*(collItems[i])) == typeid(Enemy))
+        if(typeid(*(collItems[i])) == typeid(EnemyLaser))
         {
-            collItems.removeAll(collItems[i]);
+            collItems.removeAll((collItems[i]));
             return;
-        }*/
+        }
 
         if(typeid(*(collItems[i])) == typeid(PlayerLaser))
         {
@@ -98,13 +99,13 @@ void Enemy::updateState()
     if(destinationSet)
      {
          if(pos().x() != (p1.x()))
-             setPos(x()-(4*(line.dx()+75)/line.length()), y());
+             setPos(x()-(3.25*(line.dx()+75)/line.length()), y());
          if(pos().y() != (p1.y()))
-             setPos(x(), y()-(4*(line.dy()+145)/line.length()));
+             setPos(x(), y()-(3.25*(line.dy()+145)/line.length()));
      }
 
 
-    collItems.clear();
+    //collItems.clear();
 }
 
 

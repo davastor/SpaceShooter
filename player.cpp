@@ -108,10 +108,10 @@ void Player::updateState()
             damaged = true;
             hitSound->play();
 
-            if(shield != 0)
-                shield -= 10;
+            if(shield >= 0)
+                shield -= 25;
             else
-                health -= 10;
+                health -= 25;
 
             if(health <= 0)
             {
