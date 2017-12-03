@@ -108,13 +108,14 @@ void Player::updateState()
             damaged = true;
             hitSound->play();
 
-            if(shield >= 0)
+            if(shield > 0)
                 shield -= 25;
             else
                 health -= 25;
 
             if(health <= 0)
             {
+                health = 0;
                 scene()->removeItem(this);
                 playerExplosionSound->play();
                 destroyed = true;
