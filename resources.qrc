@@ -5,5 +5,21 @@
         <file>alien.png</file>
         <file>EnemyLaser.png</file>
         <file>PlayerLaser.png</file>
+        <file>missile.png</file>
+        <file>alienDamaged.png</file>
+        <file>explosion.png</file>
+        <file>playerDamaged.png</file>
+        <file>missile1.png</file>
+        <file>space.png</file>
+    </qresource>
+    <qresource prefix="/audio">
+        <file>gamemusic.mp3</file>
+        <file>lasersound.mp3</file>
+        <file>missileSound.wav</file>
+        <file>explosion.mp3</file>
+        <file>hitsound.mp3</file>
+        <file>playerhitsound.mp3</file>
+        <file>playerexplosion.wav</file>
+        <file>enemylasersound.mp3</file>
     </qresource>
 </RCC>

@@ -12,6 +12,10 @@
 #include <QList>
 #include "playerlaser.h"
 #include "playerprojectile.h"
+#include "EnemyLaser.h"
+#include "playermissile.h"
+#include <QGraphicsTextItem>
+#include <QMediaPlayer>
 
 class Game : public QGraphicsView
 {
@@ -28,21 +32,33 @@ private:
     int ySpawn;
     Player* player;
     bool isShootingLaser;
-    bool isShootingRocket;
+    bool isShootingMissile;
+    double missileTimer;
     QTimer* spawnTimer;
     QTimer* enemyDestinationTimer;
     QTimer* enemyAngleTimer;
-    QTimer* updateLaserTimer;
     QTimer* playerFireTimer;
-    QTimer* updateRocketTimer;
-    QList <Enemy*> enemyCollection;
+    QTimer* enemyFireTimer;
+    QTimer* deathCheckTimer;
+    QGraphicsTextItem* healthText;
+    QGraphicsTextItem* shieldText;
+    QGraphicsTextItem* scoreText;
+    int score;
+    QTimer* textUpdateTimer;
     int enemyCount;
     Enemy* enemy;
     int xRand;
     int yRand;
     int spawnArea;
+    QList <Enemy*> enemyCollection;
+    QMediaPlayer* music;
+    QMediaPlayer* playerLaserSound;
+    QMediaPlayer* missileSound;
+    QMediaPlayer* explosionSound;
+    QMediaPlayer* enemyLaserSound;
 
 public:
+
     explicit Game(QWidget *parent = 0);
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent* event);
@@ -58,6 +74,11 @@ public slots:
     void setEnemyDestination();
     void setEnemyAngle();
     void playerFire();
+    void enemyFire();
+    void updateText();
+    void replayMusic(QMediaPlayer::State s);
+    void deathCheck();
+
 
 };
 

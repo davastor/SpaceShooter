@@ -5,7 +5,7 @@
 #-------------------------------------------------
 QMAKE_LFLAGS += /INCREMENTAL:NO
 
-QT       += core gui
+QT       += core gui multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -18,14 +18,20 @@ SOURCES += main.cpp \
     player.cpp \
     enemy.cpp \
     playerlaser.cpp \
-    playerprojectile.cpp
+    playerprojectile.cpp \
+    enemylaser.cpp \
+    playermissile.cpp
 
 HEADERS  += \
     game.h \
     player.h \
     enemy.h \
     playerprojectile.h \
-    playerlaser.h
+    playerlaser.h \
+    enemylaser.h \
+    playermissile.h
 
 RESOURCES += \
     resources.qrc
+
+DISTFILES +=

@@ -1,40 +1,30 @@
 #include "playerprojectile.h"
 #include <QGraphicsScene>
+#include <QGraphicsView>
 #include "Enemy.h"
 
 PlayerProjectile::PlayerProjectile(QObject *parent) : QObject(parent)
 {
-    QTimer* timer = new QTimer(this);
+    timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateState()));
     timer->start(1000/60);
+    duration = 0;
+
 }
 
 void PlayerProjectile::updateState()
 {
-    dx = 5*qCos(qDegreesToRadians(rotation()));
-    dy = 5*qSin(qDegreesToRadians(rotation()));
+    duration += 0.0179;
+    dx = 15*qCos(qDegreesToRadians(rotation()));
+    dy = 15*qSin(qDegreesToRadians(rotation()));
     setPos(x()+dx, y()+dy);
-    collItems = collidingItems();
-    int n = collItems.size();
 
-    if(pos().y() > 1000 || pos().y() < -1000)
+    if(duration >= 1)
     {
       scene()->removeItem(this);
       delete(this);
     }
-
-    for(int i = 0; i < n; i++)
-    {
-        if(typeid(*(collItems[i])) == typeid(Enemy))
-        {
-            scene()->removeItem(this);
-            delete(this);
-
-        }
-    }
 }
-
-
 
 PlayerProjectile::~PlayerProjectile()
 {

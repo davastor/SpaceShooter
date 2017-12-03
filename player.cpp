@@ -1,5 +1,9 @@
 #include "player.h"
 #include <QGraphicsSceneMouseEvent>
+#include "EnemyLaser.h"
+#include "Enemy.h"
+#include <QGraphicsScene>
+#include <QDebug>
 
 Player::Player(QObject *parent) : QObject(parent)
 {
@@ -8,7 +12,7 @@ Player::Player(QObject *parent) : QObject(parent)
     setTransformOriginPoint(64, 64);
     setPos(500,500);
 
-    timer = new QTimer();
+    timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateState()));
     timer->start(1000/60);
 
@@ -19,6 +23,17 @@ Player::Player(QObject *parent) : QObject(parent)
     
     health = 100;
     shield = 100;
+    destroyed = false;
+    damaged = false;
+
+    hitSound = new QMediaPlayer(this);
+    hitSound->setMedia(QUrl("qrc:/audio/playerhitsound.mp3"));
+    hitSound->setVolume(30);
+
+    playerExplosionSound = new QMediaPlayer(this);
+    playerExplosionSound->setMedia(QUrl("qrc:/audio/playerexplosion.wav"));
+    playerExplosionSound->setVolume(10);
+
 }
 
 QPointF Player::getOrigin(){
@@ -77,34 +92,61 @@ void Player::keyReleaseEvent(QKeyEvent *event)
 
 void Player::updateState()
 {
+    if(damaged == true)
+    {
+        setPixmap(QPixmap(":/images/player.png"));
+        damaged = false;
+    }
+
+    QList <QGraphicsItem*> collItems = collidingItems();
+
+    for(int i = 0; i < collItems.size(); i++)
+    {
+        if(typeid(*(collItems[i])) == typeid(EnemyLaser))
+        {
+            setPixmap(QPixmap(":images/playerDamaged.png"));
+            damaged = true;
+            hitSound->play();
+
+            if(shield != 0)
+                shield -= 10;
+            else
+                health -= 10;
+
+            if(health <= 0)
+            {
+                scene()->removeItem(this);
+                playerExplosionSound->play();
+                destroyed = true;
+                return;
+
+            }
+        }
+        if(typeid(*(collItems[i])) == typeid(Enemy))
+        {
+
+            health -= 1;
+            hitSound->play();
+            if(health <= 0)
+            {
+                scene()->removeItem(this);
+                playerExplosionSound->play();
+                destroyed = true;
+                return;
+            }
+        }
+    }
+
     if(isMovingUp)
-        setY(pos().y() - 3);
+        setY(pos().y() - 5);
     if(isMovingDown)
-        setY(pos().y() + 3);
+        setY(pos().y() + 5);
     if(isMovingLeft)
-        setX(pos().x() - 3);
+        setX(pos().x() - 5);
     if(isMovingRight)
-        setX(pos().x() + 3);
+        setX(pos().x() + 5);
 
     //setRotation(angle);
-}
-
-void Player::subtractHealth(int x)
-{
-    health -= x;
-}
-
-void Player::subtractShield(int x)
-{
-    if(shield != 0)
-        shield -= x;
-    else
-        health -= x;
-}
-
-int Player::getHealth()
-{
-    return health;
 }
 
 Player::~Player()

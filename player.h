@@ -6,6 +6,8 @@
 #include <QKeyEvent>
 #include <QPointF>
 #include <QTimer>
+#include <QGraphicsTextItem>
+#include <QMediaPlayer>
 
 class Player : public QObject, public QGraphicsPixmapItem
 {
@@ -21,6 +23,10 @@ private:
     bool isMovingUp;
     bool isMovingDown;
     int playerAngle;
+    bool destroyed;
+    bool damaged;
+    QMediaPlayer* hitSound;
+    QMediaPlayer* playerExplosionSound;
 
 
 public:
@@ -28,12 +34,12 @@ public:
     ~Player();
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
-    void subtractHealth(int x);
-    void subtractShield(int x);
     void setPlayerAngle(int _angle);
     int getPlayerAngle();
-    int getHealth();
+    bool getDestroyedStatus(){return destroyed;}
     QPointF getOrigin();
+    int getHealth(){return health;}
+    int getShield(){return shield;}
 
 signals:
 

@@ -14,8 +14,8 @@ protected:
     int dx;
     int dy;
     int damageValue;
+    double duration;
     QTimer* timer;
-    QList <QGraphicsItem*> collItems;
 
 public:
     explicit PlayerProjectile(QObject *parent = 0);
